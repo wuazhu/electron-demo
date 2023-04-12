@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 function Versions() {
-  console.log('window信息', window.electron.process);
   const [versions] = useState(window.electron.process.versions)
 
   return (

@@ -2,6 +2,7 @@ import icon from '../../resources/icon.png?asset'
 import { join } from 'path'
 import {BrowserWindow, shell} from 'electron'
 import { is } from '@electron-toolkit/utils'
+const { desktopCapturer } = require('electron')
 
 let controlWin
 export default function createControlWindow() {
@@ -42,6 +43,16 @@ export default function createControlWindow() {
         console.log('else');
         controlWin.loadFile(join(__dirname, '../renderer/control/index.html'))
     }
+
+
+    desktopCapturer.getSources({ types: ['window', 'screen'] }).then(async sources => {
+      for (const source of sources) {
+        if (source.name === 'Electron') {
+          mainWindow.webContents.send('SET_SOURCE', source.id)
+          return
+        }
+      }
+    })
 }
 export {
     controlWin
